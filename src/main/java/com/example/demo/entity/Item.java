@@ -7,6 +7,8 @@ import java.time.LocalDate;
 @Table(name = "item")
 public class Item {
 
+    
+
     @Id
     @Column(name = "item_code")
     private String itemCode;
@@ -36,7 +38,7 @@ public class Item {
         }
     }
 
-    // Getters and Setters
+    // Getters and Setters changed
     public String getItemCode() { 
         return itemCode;
     }
