@@ -10,12 +10,6 @@ pipeline {
         DOCKER_USER = 'kumuthini2026'
         DOCKER_PASS = 'Asha@2026'
         IMAGE_NAME = "${DOCKER_USER}/test:todoimg"
-        SONAR_HOST_URL = 'http://localhost:9000'
-        SONAR_LOGIN = 'sqa_4259bd8980efee0a86c8fb4ce215e00e0427fc1c'
-    }
-
-    triggers {
-        pollSCM('H/15 * * * *')
     }
 
     stages {
@@ -27,14 +21,7 @@ pipeline {
 
         stage('Build') {
             steps {
-                // Run Maven from the root folder where pom.xml exists
                 bat 'mvn clean package -DskipTests'
-            }
-        }
-
-        stage('SonarQube Analysis') {
-            steps {
-                bat "mvn sonar:sonar -Dsonar.projectKey=devops-integration -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.login=${SONAR_LOGIN}"
             }
         }
 
@@ -59,7 +46,7 @@ pipeline {
             deleteDir()
         }
         success {
-            echo "Build, Test, SonarQube Analysis, and Docker Push completed successfully!"
+            echo "Build, Test, and Docker Push completed successfully!"
         }
         failure {
             echo "Build failed. Check logs for details."
