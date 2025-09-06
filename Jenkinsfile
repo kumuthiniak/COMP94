@@ -27,35 +27,28 @@ pipeline {
 
         stage('Build') {
             steps {
-                dir('NCC_2025/backend2') {
-                    bat 'mvn clean package -DskipTests'
-                }
+                // Run Maven from the root folder where pom.xml exists
+                bat 'mvn clean package -DskipTests'
             }
         }
 
         stage('SonarQube Analysis') {
             steps {
-                dir('NCC_2025/backend2') {
-                    bat "mvn sonar:sonar -Dsonar.projectKey=devops-integration -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.login=${SONAR_LOGIN}"
-                }
+                bat "mvn sonar:sonar -Dsonar.projectKey=devops-integration -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.login=${SONAR_LOGIN}"
             }
         }
 
         stage('Test') {
             steps {
-                dir('NCC_2025/backend2') {
-                    bat 'mvn test'
-                }
+                bat 'mvn test'
             }
         }
 
         stage('Docker Build & Push') {
             steps {
-                dir('NCC_2025/backend2') {
-                    bat "docker build -t ${IMAGE_NAME} ."
-                    bat "docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}"
-                    bat "docker push ${IMAGE_NAME}"
-                }
+                bat "docker build -t ${IMAGE_NAME} ."
+                bat "docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}"
+                bat "docker push ${IMAGE_NAME}"
             }
         }
     }
